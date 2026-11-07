@@ -1,0 +1,160 @@
+/* =============================================================================
+   Widget del asistente · estilo Banco Contactar
+   Para otro proyecto, basta con cambiar las variables de color de abajo.
+   ============================================================================= */
+#agro-widget-container {
+    --agro-primario: #0F2B20;        /* verde muy oscuro: encabezado, botones */
+    --agro-primario-hover: #1B4433;
+    --agro-acento: #E8541E;          /* naranja Contactar: detalles y foco */
+    --agro-fondo: #F4F6F5;           /* fondo de la conversación */
+    --agro-burbuja-asistente: #FFFFFF;
+    --agro-burbuja-usuario: #0F2B20;
+    --agro-texto: #1F2A24;
+    --agro-texto-suave: #5F6B65;
+    --agro-borde: #E3E7E5;
+    --agro-radio: 14px;
+    --agro-sombra: 0 10px 30px rgba(15, 43, 32, 0.22);
+
+    position: fixed; right: 24px; bottom: 24px; z-index: 9999;
+    font-family: 'Segoe UI', system-ui, -apple-system, Roboto, Arial, sans-serif;
+    color: var(--agro-texto);
+}
+#agro-widget-container *, #agro-widget-container *::before, #agro-widget-container *::after { box-sizing: border-box; }
+#agro-widget-container [hidden] { display: none !important; }
+#agro-widget-container svg { width: 20px; height: 20px; fill: currentColor; flex-shrink: 0; }
+#agro-widget-container button:focus-visible,
+#agro-widget-container input:focus-visible { outline: 2px solid var(--agro-acento); outline-offset: 2px; }
+
+/* ----- Botón flotante ----- */
+#agro-chat-btn {
+    width: 60px; height: 60px; border-radius: 50%; border: none; cursor: pointer;
+    background: var(--agro-primario); color: #fff; box-shadow: var(--agro-sombra);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+#agro-chat-btn svg { width: 26px; height: 26px; }
+#agro-chat-btn:hover { background: var(--agro-primario-hover); transform: scale(1.05); }
+
+/* ----- Ventana ----- */
+#agro-chat-window {
+    position: absolute; right: 0; bottom: 76px;
+    width: 380px; max-width: calc(100vw - 32px); height: 580px; max-height: calc(100vh - 110px);
+    background: #fff; border-radius: var(--agro-radio); box-shadow: var(--agro-sombra); overflow: hidden;
+    display: none;
+}
+#agro-chat-window.abierta { display: block; animation: agro-aparecer 0.18s ease; }
+@keyframes agro-aparecer { from { opacity: 0; transform: translateY(12px) scale(0.98); } to { opacity: 1; transform: none; } }
+.agro-vista { height: 100%; display: flex; flex-direction: column; }
+
+/* ----- Vista de bienvenida (como la del banco) ----- */
+#agro-vista-inicio { background: var(--agro-fondo); }
+.agro-portada { background: var(--agro-primario); color: #fff; padding: 22px 22px 64px; }
+.agro-portada-arriba { display: flex; align-items: flex-start; justify-content: space-between; min-height: 40px; margin-bottom: 18px; }
+#agro-logo { height: 46px; max-width: 220px; object-fit: contain; }
+.agro-saludo { margin: 0 0 6px; font-size: 21px; line-height: 1.35; font-weight: 600; }
+.agro-subtitulo { margin: 0; font-size: 14px; opacity: 0.85; }
+.agro-tarjeta {
+    margin: -40px 16px 0; background: #fff; border-radius: 10px; padding: 18px;
+    box-shadow: 0 2px 10px rgba(15, 43, 32, 0.12); border-left: 3px solid var(--agro-acento);
+}
+.agro-tarjeta-titulo { margin: 0 0 6px; font-size: 16px; font-weight: 600; }
+.agro-tarjeta-texto { margin: 0 0 14px; font-size: 13px; line-height: 1.45; color: var(--agro-texto-suave); }
+.agro-boton {
+    display: inline-flex; align-items: center; gap: 10px; border: none; border-radius: 6px; cursor: pointer;
+    background: var(--agro-primario); color: #fff; padding: 10px 16px; font-size: 14px; font-weight: 600;
+    box-shadow: 0 2px 6px rgba(15, 43, 32, 0.25); transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.agro-boton:hover { background: var(--agro-primario-hover); }
+.agro-boton:active { transform: scale(0.98); }
+.agro-boton svg { width: 18px; height: 18px; }
+
+/* ----- Botones de ícono (cerrar, volver) ----- */
+.agro-icono {
+    background: none; border: none; color: #fff; cursor: pointer; padding: 6px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center; transition: background-color 0.2s ease;
+}
+.agro-icono:hover { background: rgba(255, 255, 255, 0.14); }
+
+/* ----- Vista de conversación ----- */
+#agro-chat-header { background: var(--agro-primario); color: #fff; padding: 12px 10px; display: flex; align-items: center; gap: 8px; }
+.agro-avatar {
+    width: 36px; height: 36px; border-radius: 50%; background: rgba(255, 255, 255, 0.14);
+    display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
+}
+.agro-encabezado-textos { flex: 1; min-width: 0; }
+.agro-encabezado-textos h4 { margin: 0; font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.agro-estado { font-size: 12px; opacity: 0.8; display: inline-flex; align-items: center; gap: 6px; }
+.agro-estado::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #5BD18B; }
+
+#agro-chat-messages {
+    flex: 1; overflow-y: auto; background: var(--agro-fondo); padding: 16px 14px;
+    display: flex; flex-direction: column; gap: 10px; scroll-behavior: smooth;
+}
+/* Cada mensaje en su fila: el avatar va junto a las respuestas, y debajo el nombre y la hora */
+.agro-fila { display: flex; align-items: flex-end; gap: 8px; }
+.agro-fila.usuario { justify-content: flex-end; }
+.agro-columna { display: flex; flex-direction: column; max-width: 82%; min-width: 0; }
+.agro-fila.usuario .agro-columna { align-items: flex-end; }
+.agro-meta { font-size: 11px; color: var(--agro-texto-suave); margin: 4px 6px 0; }
+.agro-avatar-img {
+    width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0; object-fit: cover; background: #fff;
+    margin-bottom: 18px;   /* alineado con la burbuja, no con el nombre y la hora */
+}
+.agro-avatar-vacio { display: flex; align-items: center; justify-content: center; font-size: 15px; background: #E3EDE8; }
+.agro-fila:has(.agro-escribiendo) .agro-avatar-img { margin-bottom: 0; }
+#agro-chat-header .agro-avatar-img { width: 36px; height: 36px; margin: 0; }
+#agro-avatar-encabezado:has(img) { background: none; }
+
+.agro-message { max-width: 100%; padding: 10px 14px; border-radius: 16px; font-size: 14px; line-height: 1.45; overflow-wrap: anywhere; }
+.agro-message.assistant {
+    align-self: flex-start; background: var(--agro-burbuja-asistente); color: var(--agro-texto);
+    border-bottom-left-radius: 4px; box-shadow: 0 1px 2px rgba(15, 43, 32, 0.08);
+}
+.agro-message.user { align-self: flex-end; background: var(--agro-burbuja-usuario); color: #fff; border-bottom-right-radius: 4px; }
+
+/* Tres puntos mientras responde */
+.agro-escribiendo { display: inline-flex; gap: 4px; padding: 14px 16px; }
+.agro-escribiendo span { width: 7px; height: 7px; border-radius: 50%; background: var(--agro-texto-suave); animation: agro-salto 1.2s infinite ease-in-out; }
+.agro-escribiendo span:nth-child(2) { animation-delay: 0.15s; }
+.agro-escribiendo span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes agro-salto { 0%, 60%, 100% { transform: translateY(0); opacity: 0.4; } 30% { transform: translateY(-5px); opacity: 1; } }
+
+/* ¿Te sirvió? 👍 👎 */
+.agro-feedback { margin-top: 8px; padding-top: 7px; border-top: 1px solid var(--agro-borde); display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--agro-texto-suave); }
+.agro-feedback span { margin-right: 4px; }
+.agro-feedback button { background: none; border: 1px solid transparent; border-radius: 999px; cursor: pointer; font-size: 15px; padding: 2px 7px; transition: background-color 0.15s ease, border-color 0.15s ease; }
+.agro-feedback button:hover:not(:disabled) { background: var(--agro-fondo); border-color: var(--agro-borde); }
+.agro-feedback button:disabled { cursor: default; opacity: 0.5; }
+.agro-feedback.ok { color: #2E7D32; font-weight: 600; }
+.agro-feedback.error { color: #C62828; }
+
+/* ----- Escribir ----- */
+#agro-chat-input-area { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: #fff; border-top: 1px solid var(--agro-borde); }
+#agro-chat-input {
+    flex: 1; min-width: 0; border: 1px solid var(--agro-borde); border-radius: 999px; padding: 11px 16px;
+    font-size: 14px; color: var(--agro-texto); background: var(--agro-fondo); outline: none; transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+#agro-chat-input:focus { border-color: var(--agro-primario); background: #fff; }
+#agro-chat-send {
+    width: 42px; height: 42px; border-radius: 50%; border: none; cursor: pointer; flex-shrink: 0;
+    background: var(--agro-primario); color: #fff; display: flex; align-items: center; justify-content: center;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+#agro-chat-send:hover:not(:disabled) { background: var(--agro-primario-hover); }
+#agro-chat-send:disabled { opacity: 0.5; cursor: wait; }
+
+/* ----- Celular: la ventana ocupa toda la pantalla ----- */
+@media (max-width: 480px) {
+    #agro-widget-container { right: 16px; bottom: 16px; }
+    #agro-chat-window.abierta {
+        position: fixed; inset: 0; width: 100%; max-width: none; height: 100%; max-height: none; border-radius: 0;
+    }
+    .agro-columna { max-width: 88%; }
+}
+
+/* Sin animaciones para quien las desactivó en su sistema */
+@media (prefers-reduced-motion: reduce) {
+    #agro-chat-window.abierta { animation: none; }
+    #agro-chat-btn, .agro-boton { transition: none; }
+    .agro-escribiendo span { animation: none; opacity: 0.7; }
+}

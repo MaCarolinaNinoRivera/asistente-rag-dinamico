@@ -1,0 +1,17 @@
+services:
+  db_asistente:
+    image: pgvector/pgvector:pg16
+    container_name: db_asistente_rag
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password_asistente
+      POSTGRES_DB: bd_asistente
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata_asistente:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  pgdata_asistente:

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Agro - Panel Principal</title>
+    <!-- Vinculamos los estilos del widget -->
+    <link rel="stylesheet" href="widget.css">
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f6f8; margin: 0; padding: 40px;">
+
+    <div style="max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+        <h1>🌾 Panel de Control - Gestor Agro</h1>
+        <p>Bienvenido al sistema de gestión agrícola. Aquí puedes supervisar tus inventarios, cultivos y fincas.</p>
+        <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+        <h3>Estado actual del sistema</h3>
+        <p>⚠️ Tienes una <strong>alerta roja</strong> pendiente en el inventario de insumos generales.</p>
+    </div>
+
+    <!-- Script del widget que se encarga de crear el botón flotante e iniciar la conversacion -->
+    <script src="widget.js"
+        data-api="http://localhost:8001/api/v1"
+        data-proyecto="agro"
+        data-logo="logo-contactar.png"
+        data-avatar="avatar-contactar.png"
+        data-empresa="Banco Contactar"
+        data-asistente="Aliado del Campesino"></script>
+</body>
+</html>

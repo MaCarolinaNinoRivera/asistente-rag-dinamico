@@ -1,0 +1,150 @@
+# =============================================================================
+# Fichas de las pantallas de Agro Inventory
+#
+# El asistente incluye SIEMPRE la ficha de la pantalla donde está el usuario: así responde
+# "¿qué hago acá?". El `codigo` debe ser igual al que la aplicación envía en
+# data-pantalla / AsistenteAgro.setPantalla(...).
+#
+# Escribe como le hablarías a un campesino: frases cortas, sin palabras técnicas.
+# Para aplicar los cambios: POST /api/v1/admin/pantallas/sincronizar (segunda ronda).
+# =============================================================================
+
+- codigo: dashboard
+  nombre: Inicio
+  descripcion: >
+    La entrada de la aplicación. Muestra los primeros pasos para configurar la finca y los
+    accesos rápidos a lo que más se usa.
+  acciones:
+    - Ver qué paso de la configuración le falta y empezar por ahí
+    - Ir a analizar el inventario con una foto
+    - Ir a las tendencias, las recomendaciones o el panorama del mercado
+
+- codigo: lotes
+  nombre: Lotes
+  descripcion: >
+    Los lotes o fincas donde siembra. Es lo primero que hay que crear: sin lotes no se puede
+    registrar inventario, ni gastos, ni ventas.
+  acciones:
+    - Crear un lote con su nombre y dónde queda
+    - Cambiar el nombre o la descripción de un lote
+    - Eliminar un lote que ya no usa
+
+- codigo: productos
+  nombre: Productos
+  descripcion: >
+    La lista de lo que cultiva o vende. Cada producto tiene su unidad de medida y, si quiere,
+    su receta de cultivo. Al escribir el nombre, la aplicación revisa si el DANE lo reconoce
+    para poder mostrarle precios.
+  acciones:
+    - Crear un producto y elegir si se mide en unidad, kg, arroba, bulto o canastilla
+    - Corregir el nombre si la aplicación sugiere otro (por ejemplo, una variedad que sí tiene precio en su ciudad)
+    - Crear la receta del cultivo, es decir, qué insumos lleva por cada unidad sembrada
+    - Unir dos productos repetidos en uno solo
+
+- codigo: inventario-lote
+  nombre: Inventario por lote
+  descripcion: >
+    Cuánto tiene hoy de cada producto en cada lote. Al poner la cantidad inicial, la aplicación
+    registra una entrada en los movimientos.
+  acciones:
+    - Elegir el lote y ver sus productos
+    - Poner o corregir la cantidad que tiene de cada producto
+    - Definir el mínimo, para que la aplicación avise cuando quede poco
+
+- codigo: inventario
+  nombre: Analizar inventario
+  descripcion: >
+    Aquí toma una foto de su lote y la aplicación reconoce los productos y actualiza el
+    inventario. Cuenta grupos (una canasta, un racimo), no unidades sueltas. Lo que no sale en
+    la foto queda en cero.
+  acciones:
+    - Elegir el lote y tomar o subir una foto, mejor con buena luz y de cerca
+    - Revisar lo que encontró la inteligencia artificial
+    - Corregir un producto que reconoció mal o marcar que algo no es un producto
+    - Después, en Movimientos, decir si lo que salió fue una venta, una pérdida o consumo propio
+
+- codigo: movimientos
+  nombre: Movimientos
+  descripcion: >
+    Cada entrada y salida de su inventario. Decir por qué salió cada producto (venta, merma,
+    consumo propio) es lo que permite calcular sus tendencias y darle buenos consejos.
+  acciones:
+    - Registrar una venta con su precio, una cosecha o una pérdida
+    - Clasificar los movimientos que registró el análisis de fotos (pestaña Por clasificar)
+    - Filtrar por lote, por entradas o por salidas
+
+- codigo: gastos
+  nombre: Gastos e insumos
+  descripcion: >
+    Lo que paga para producir: insumos (abonos, semillas, fungicidas), jornales, transporte.
+    Con esto la aplicación calcula cuánto le cuesta producir cada cultivo.
+  acciones:
+    - Registrar sus insumos con su presentación (bulto, litro, kilo) y su precio
+    - Registrar un gasto, eligiendo primero el lote y luego el cultivo
+    - Repartir un gasto entre varios cultivos, por ejemplo un bulto de abono para tres productos
+
+- codigo: tendencias
+  nombre: Tendencias de precios
+  descripcion: >
+    Cómo se están vendiendo sus productos y cómo está el precio mayorista del DANE. El color del
+    precio dice si subió (verde, buen momento para vender), si está estable (amarillo) o si bajó
+    (rojo) frente a la semana anterior.
+  acciones:
+    - Ver cuánto vende por día y en cuántos días se le acaba cada producto
+    - Comparar su precio de venta con el de la central de abastos
+    - Ver la gráfica de sus ventas y del precio
+
+- codigo: recomendaciones
+  nombre: Recomendaciones
+  descripcion: >
+    Consejos para su finca, calculados con su inventario, sus ventas, sus costos y los precios
+    del mercado. Los más importantes aparecen primero.
+  acciones:
+    - Leer los consejos y marcarlos como leídos
+    - Ir al producto o a la pantalla que menciona cada consejo
+
+- codigo: panorama
+  nombre: Panorama del mercado
+  descripcion: >
+    Los precios de sus productos en las centrales de abastos: cómo vienen y qué se espera en las
+    próximas semanas. La sombra gris de la gráfica es entre qué precio mínimo y máximo se vendió
+    cada semana. Si su ciudad no reporta un producto, se muestra la central más cercana que sí.
+  acciones:
+    - Ver la historia y el pronóstico de cada producto (pestaña Mis productos)
+    - Comparar los precios entre departamentos en el mapa
+    - Ver en qué meses se paga mejor cada producto (pestaña Calendario)
+
+- codigo: consumo-ia
+  nombre: Consumo de IA
+  descripcion: >
+    Solo para administradores. Cuántas veces se usó la inteligencia artificial y cuánto costó.
+  acciones:
+    - Ver el consumo por día y por modelo
+
+- codigo: admin-usuarios
+  nombre: Usuarios
+  descripcion: >
+    Solo para administradores. Las cuentas de la aplicación y sus roles.
+  acciones:
+    - Crear, editar o desactivar usuarios
+    - Cambiar el rol de un usuario
+
+- codigo: admin-mercado
+  nombre: Datos de mercado
+  descripcion: >
+    Solo para administradores. El estado de los datos del DANE y de la NOAA, y las cargas
+    manuales de archivos.
+  acciones:
+    - Revisar que los boletines semanales estén al día
+    - Subir el archivo de abastecimiento (cada mes) o los precios mensuales (cada 3 meses)
+    - Subir a mano un boletín que no se pudo descargar
+
+- codigo: admin-modelo
+  nombre: Modelo de pronóstico
+  descripcion: >
+    Solo para administradores. El modelo que pronostica los precios: cuál está en uso, qué tan
+    bien acierta y qué información usa para decidir.
+  acciones:
+    - Revisar las tareas automáticas y las alarmas
+    - Ver la calidad del modelo semana a semana
+    - Ver qué variables pesan más en los pronósticos

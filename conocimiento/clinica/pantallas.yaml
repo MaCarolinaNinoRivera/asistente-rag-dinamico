@@ -1,0 +1,14 @@
+- codigo: general
+  nombre: Vista General Clínica
+  descripcion: Espacio principal de consulta de guías y resúmenes de pacientes.
+  acciones:
+    - Consultar protocolos y guías médicas
+    - Generar resúmenes ejecutivos de notas clínicas
+    - Buscar interacciones o pautas de tratamiento
+
+- codigo: resumenes
+  nombre: Módulo de Síntesis
+  descripcion: Pantalla dedicada a procesar documentos largos y extraer conclusiones.
+  acciones:
+    - Resumir historiales extensos
+    - Extraer alertas o antecedentes clave

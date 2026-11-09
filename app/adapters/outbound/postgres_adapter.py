@@ -25,12 +25,24 @@ class PostgresVectorAdapter(VectorRepositoryPort):
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def obtener_proyecto(self, codigo: str) -> Optional[dict]:
-        fila = (await self.session.execute(text("""
-            SELECT id, minutos_inactividad, personalidad, url_validacion_token, campo_usuario_id, limite_mensajes_dia
-            FROM asistente.proyectos WHERE codigo = :codigo AND activo
-        """), {"codigo": codigo})).mappings().first()
-        return dict(fila) if fila else None
+    async def obtener_proyecto(self, proyecto_codigo: str):
+        try:
+            logger.info(f"🔍 Intentando conectar a la BD para buscar el proyecto: {proyecto_codigo}")
+            fila = (await self.session.execute(text("""
+                SELECT codigo, nombre, prompt_sistema, pantalla_codigo 
+                FROM proyectos 
+                WHERE codigo = :codigo
+            """), {"codigo": proyecto_codigo})).fetchone()
+            
+            if not fila:
+                logger.warning(f"⚠️ El proyecto '{proyecto_codigo}' no fue encontrado en la base de datos.")
+                return None
+                
+            return dict(fila._mapping)
+            
+        except Exception as e:
+            logger.error(f"❌ ERROR CRÍTICO DE CONEXIÓN O SQL en obtener_proyecto: {type(e).__name__} - {e}")
+            raise e
 
     async def contar_preguntas_hoy(self, proyecto_id: UUID, usuario_id: str, zona_horaria: str) -> int:
         return (await self.session.execute(text("""

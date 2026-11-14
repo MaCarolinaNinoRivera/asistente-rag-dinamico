@@ -220,3 +220,21 @@ async def resumen_consumo(proyecto_codigo: str = PROYECTO,
     """
     uc = _uc(db)
     return await uc.admin.resumen_consumo(await _proyecto(uc, proyecto_codigo), dias, settings.ZONA_HORARIA)
+
+@router.get("/test-db")
+async def test_conexion_supabase(db: AsyncSession = Depends(get_db)):
+    """Endpoint de arquitectura limpia para verificar el handshake con Supabase."""
+    repo = PostgresVectorAdapter(db)
+    try:
+        resultado = await repo.probar_conexion()
+        return {
+            "status": "success",
+            "mensaje": "¡Conexión establecida con éxito en la arquitectura! 🚀",
+            "data": resultado
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "tipo_error": type(e).__name__,
+            "detalle": str(e)
+        }

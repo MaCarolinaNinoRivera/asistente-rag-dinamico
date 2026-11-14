@@ -29,8 +29,8 @@ class PostgresVectorAdapter(VectorRepositoryPort):
         try:
             logger.info(f"🔍 Intentando conectar a la BD para buscar el proyecto: {proyecto_codigo}")
             fila = (await self.session.execute(text("""
-                SELECT codigo, nombre, prompt_sistema, pantalla_codigo 
-                FROM proyectos 
+                SELECT id, codigo, nombre, personalidad AS prompt_sistema, NULL AS pantalla_codigo 
+                FROM asistente.proyectos 
                 WHERE codigo = :codigo
             """), {"codigo": proyecto_codigo})).fetchone()
             
@@ -269,3 +269,13 @@ class PostgresVectorAdapter(VectorRepositoryPort):
         if fila:
             logger.info("⭐ Calificación %s guardada para el mensaje %s", calificacion, mensaje_id)
         return fila is not None
+
+    async def probar_conexion(self) -> dict:
+        """Prueba de conectividad directa con Supabase / PostgreSQL."""
+        try:
+            logger.info("🔌 [ADAPTER] Probando ejecución de SELECT 1 en la base de datos...")
+            fila = (await self.session.execute(text("SELECT 1 AS ok, NOW() AS hora_actual"))).mappings().first()
+            return {"conectado": True, "detalle": dict(fila)}
+        except Exception as e:
+            logger.error(f"❌ [ADAPTER] Error de conexión en probar_conexion: {type(e).__name__} - {e}")
+            raise e

@@ -5,7 +5,7 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "Asistente RAG Agro"
     ENVIRONMENT: str = "development"
     PORT: int = 8001
-    DATABASE_URL: str = "postgresql+asyncpg://postgres:password_asistente@localhost:5433/bd_asistente"
+    DATABASE_URL: str
     GEMINI_API_KEY: str = ""
     # Orígenes que pueden usar el asistente desde el navegador, separados por coma.
     # Desplegado: SOLO los dominios reales (por ejemplo https://agro.bancocontactar.com), nunca "*".

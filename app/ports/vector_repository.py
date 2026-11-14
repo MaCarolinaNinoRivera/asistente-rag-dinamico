@@ -66,3 +66,8 @@ class VectorRepositoryPort(ABC):
     async def guardar_calificacion(self, mensaje_id: UUID, usuario_id: str, calificacion: int,
                                    comentario: Optional[str] = None) -> bool:
         """False si el mensaje no existe, no es del asistente o no es de ese usuario."""
+
+    @abstractmethod
+    async def probar_conexion(self) -> dict:
+        """Verifica que la conexión con la base de datos responda."""
+        pass

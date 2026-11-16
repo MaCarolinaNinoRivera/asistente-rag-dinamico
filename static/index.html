@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema Agro - Panel Principal</title>
-    <!-- Vinculamos los estilos del widget -->
-    <link rel="stylesheet" href="widget.css">
+    <!-- Ruta apuntando a /static/ -->
+    <link rel="stylesheet" href="/static/widget.css">
 </head>
 <body style="font-family: Arial, sans-serif; background-color: #f4f6f8; margin: 0; padding: 40px;">
 
@@ -17,13 +17,15 @@
         <p>⚠️ Tienes una <strong>alerta roja</strong> pendiente en el inventario de insumos generales.</p>
     </div>
 
-    <!-- Script del widget que se encarga de crear el botón flotante e iniciar la conversacion -->
-    <script src="widget.js"
-        data-api="http://localhost:8001/api/v1"
+    <!-- Con data-logo="" y data-avatar="" vacíos, toma automáticamente data-emoji="🌱" -->
+    <script src="/static/widget.js"
+        data-api="/api/v1"
         data-proyecto="agro"
-        data-logo="logo-contactar.png"
-        data-avatar="avatar-contactar.png"
+        data-emoji="🌱"
+        data-logo=""
+        data-avatar=""
         data-empresa="Banco Contactar"
-        data-asistente="Aliado del Campesino"></script>
+        data-asistente="Aliado del Campesino"
+        data-descripcion="Pregúntale a tu Aliado del Campesino sobre la aplicación o tu finca. Responde a cualquier hora."></script>
 </body>
 </html>

@@ -3,26 +3,221 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CliniSum - Sistema de Gestión Hospitalaria</title>
-    <link rel="stylesheet" href="widget.css">
-</head>
-<body style="font-family: Arial, sans-serif; background-color: #f4f6f8; margin: 0; padding: 40px;">
+    <title>CliniSum - Sistema de Inteligencia Clínica</title>
+    <link rel="stylesheet" href="/static/widget.css">
+    <style>
+        :root {
+            --primary: #0284c7;      /* Azul clínico */
+            --primary-dark: #0369a1;
+            --accent: #0d9488;       /* Verde azulado médico */
+            --bg-page: #f0f9ff;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border: #e2e8f0;
+        }
 
-    <div style="max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
-        <h1>🩺 CliniSum - Módulo de Inteligencia Clínica</h1>
-        <p>Plataforma de apoyo para la síntesis de expedientes y consulta rápida de protocolos médicos.</p>
-        <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
-        <h3>Resumen de Expediente Activo</h3>
-        <p>📋 <strong>Paciente:</strong> Registro #84920 - Protocolo de seguimiento cardiológico.</p>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 32px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Barra superior hospitalaria */
+        .header-bar {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px 32px;
+            box-shadow: 0 4px 20px rgba(2, 132, 199, 0.08);
+            border-left: 6px solid var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .header-title h1 {
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-title p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 6px;
+        }
+
+        .badge-status {
+            background: #ccfbf1;
+            color: #0f766e;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-dot {
+            width: 8px;
+            height: 8px;
+            background: #0d9488;
+            border-radius: 50%;
+        }
+
+        /* Tarjeta principal del expediente */
+        .clinical-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 28px 32px;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+            border: 1px solid var(--border);
+        }
+
+        .section-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .patient-banner {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .patient-info strong { color: var(--text-main); }
+        .patient-info span { color: var(--text-muted); font-size: 0.92rem; }
+
+        /* Grilla de signos vitales / indicadores */
+        .vitals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .vital-box {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .vital-box .label {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .vital-box .value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .vital-box .unit {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+
+        .helper-note {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 14px 18px;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            color: #1e3a8a;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="header-bar">
+            <div class="header-title">
+                <h1>🩺 CliniSum · Módulo de Inteligencia Clínica</h1>
+                <p>Síntesis de historias clínicas, protocolos hospitalarios y apoyo diagnóstico.</p>
+            </div>
+            <div class="badge-status">
+                <span class="badge-dot"></span>
+                Sistema Clínico Activo
+            </div>
+        </header>
+
+        <main class="clinical-card">
+            <div class="section-label">Expediente en Consulta</div>
+            
+            <div class="patient-banner">
+                <div class="patient-info">
+                    <strong>Paciente:</strong> <span>Registro #84920 · Masculino, 58 años</span>
+                </div>
+                <div class="patient-info">
+                    <strong>Servicio:</strong> <span>Cardiología y Medicina Interna</span>
+                </div>
+            </div>
+
+            <div class="section-label">Signos Vitales de Ingreso</div>
+            <div class="vitals-grid">
+                <div class="vital-box">
+                    <div class="label">Tensión Arterial</div>
+                    <div class="value">128/82 <span class="unit">mmHg</span></div>
+                </div>
+                <div class="vital-box">
+                    <div class="label">Frecuencia Cardíaca</div>
+                    <div class="value">74 <span class="unit">lpm</span></div>
+                </div>
+                <div class="vital-box">
+                    <div class="label">Saturación O₂</div>
+                    <div class="value">98 <span class="unit">%</span></div>
+                </div>
+                <div class="vital-box">
+                    <div class="label">Temperatura</div>
+                    <div class="value">36.6 <span class="unit">°C</span></div>
+                </div>
+            </div>
+
+            <div class="helper-note">
+                💡 <strong>Asistente CliniSum disponible:</strong> Abre el chat en la esquina inferior derecha para consultar guías clínicas, resumir evolución o verificar protocolos médicos.
+            </div>
+        </main>
     </div>
 
-    <!-- Script del widget configurado para el proyecto clínico -->
-    <script src="widget.js"
-        data-api="http://localhost:8001/api/v1"
+    <!-- Script del widget configurado dinámicamente (sin localhost) -->
+    <script src="/static/widget.js"
+        data-api="/api/v1"
         data-proyecto="clinica"
+        data-emoji="🩺"
         data-logo=""
         data-avatar=""
         data-empresa="CliniSum Health"
-        data-asistente="Asistente CliniSum"></script>
+        data-asistente="Asistente CliniSum"
+        data-descripcion="Consulta protocolos médicos, guías clínicas y síntesis de expedientes. Disponible 24/7."
+        ></script>
 </body>
 </html>

@@ -34,19 +34,15 @@ async def health_check():
 
 @app.get("/", tags=["Interfaz"])
 async def servir_interfaz(proyecto: str = Query(settings.PROYECTO_POR_DEFECTO, alias="proyecto")):
-    """
-    Sirve la interfaz gráfica de forma dinámica según el parámetro ?proyecto= de la URL,
-    sin necesidad de modificar el archivo .env.
-    """
     if proyecto == "clinica":
         archivo_html = "static/medico.html"
-    elif proyecto == "agro":
-        archivo_html = "static/agro.html"
     else:
         archivo_html = "static/index.html"
 
     if os.path.exists(archivo_html):
         return FileResponse(archivo_html)
+    
+    return FileResponse("static/index.html")
     
     return FileResponse("static/agro.html")
 

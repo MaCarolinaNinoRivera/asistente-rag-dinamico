@@ -1,4 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
+from fastapi.responses import FileResponse
+import os
+
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import uvicorn
@@ -29,7 +32,25 @@ app.include_router(admin_router)
 async def health_check():
     return {"status": "ok", "project": settings.PROJECT_NAME}
 
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
+@app.get("/", tags=["Interfaz"])
+async def servir_interfaz(proyecto: str = Query(settings.PROYECTO_POR_DEFECTO, alias="proyecto")):
+    """
+    Sirve la interfaz gráfica de forma dinámica según el parámetro ?proyecto= de la URL,
+    sin necesidad de modificar el archivo .env.
+    """
+    if proyecto == "clinica":
+        archivo_html = "static/medico.html"
+    elif proyecto == "agro":
+        archivo_html = "static/agro.html"
+    else:
+        archivo_html = "static/index.html"
+
+    if os.path.exists(archivo_html):
+        return FileResponse(archivo_html)
+    
+    return FileResponse("static/agro.html")
+
+app.mount("/static", StaticFiles(directory="static"), name="static_assets")
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=settings.PORT, reload=True)

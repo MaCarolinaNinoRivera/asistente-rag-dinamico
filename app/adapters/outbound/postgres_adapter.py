@@ -29,7 +29,7 @@ class PostgresVectorAdapter(VectorRepositoryPort):
         try:
             logger.info(f"🔍 Intentando conectar a la BD para buscar el proyecto: {proyecto_codigo}")
             fila = (await self.session.execute(text("""
-                SELECT id, codigo, nombre, personalidad AS prompt_sistema, NULL AS pantalla_codigo 
+                SELECT *, personalidad AS prompt_sistema, NULL AS pantalla_codigo
                 FROM asistente.proyectos 
                 WHERE codigo = :codigo
             """), {"codigo": proyecto_codigo})).fetchone()
@@ -38,10 +38,13 @@ class PostgresVectorAdapter(VectorRepositoryPort):
                 logger.warning(f"⚠️ El proyecto '{proyecto_codigo}' no fue encontrado en la base de datos.")
                 return None
                 
-            return dict(fila._mapping)
+            datos = dict(fila._mapping)
+            # Aseguramos valores por defecto por si vienen NULL en la base de datos
+            datos.setdefault("minutos_inactividad", 30)
+            return datos
             
         except Exception as e:
-            logger.error(f"❌ ERROR CRÍTICO DE CONEXIÓN O SQL en obtener_proyecto: {type(e).__name__} - {e}")
+            logger.error(f"❌ ERROR CRÍTICO DE CONEXIÓN O SQL en obtener_proyecto: {type(e).__name__}: {e}")
             raise e
 
     async def contar_preguntas_hoy(self, proyecto_id: UUID, usuario_id: str, zona_horaria: str) -> int:
